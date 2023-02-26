@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    Khách hàng: {{Name}}<br />
+    Số điện thoại: {{PhoneNumber}}<br />
+    Email: {{Email}}<br />
+    Địa chỉ nhận hàng: {{Address}}<br />
+    Tổng tiền: {{TotalPayment}}<br />
+    Sản phẩm: <br />
+    <div id="listProductName">{{ListProductName}}</div>
+    <div id="listProduct"></div>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <script>
+        var json = '' + $('#listProductName').val() + '';
+        var obj = JSON.parse(json);
+        for (var i = 0; i <= obj.length; i++) {
+            $('#listProduct').html('<p>+ ' + obj[i] + '</><br />');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+﻿@model VKStore.ViewModels.Catalog.Orders.OrderViewModel
+@using VKStore.Data.Enums;
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var listProduct = ViewBag.Product;
+}
+
+<div class="container-fluid px-4">
+    <h3 class="mt-4">QUẢN TRỊ NGƯỜI DÙNG</h3>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Người dùng</li>
+        <li class="breadcrumb-item active">Chi tiết</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            Chi tiết đơn hàng #@Html.DisplayFor(model => model.Id)
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+    <dl class="row">
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.OrderDate)
+        </dd>
+        @*<dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.UserId)
+        </dd>*@
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.ShipName)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.ShipName)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.ShipAddress)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.ShipAddress)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.ShipEmail)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.ShipEmail)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.ShipPhoneNumber)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.ShipPhoneNumber)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.TotalPayment)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.TotalPayment)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class = "col-sm-8">
+                            @Html.DisplayFor(model => model.Status)
+                        </dd>
+    </dl>
+    <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Tên sản phẩm</th>
+                        <th>Số lượng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in listProduct)
+                    {
+                        <tr>
+                                    <td>@item.ProductName</td>
+                                    <td>@item.Quantity</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+           <div class="row">
+                        <div class="col-md-3">
+                            <select id="selected" class="form-control">
+                                <option>---------Chọn---------</option>
+                                <option>Đã xác nhận</option>
+                                <option>Đang giao</option>
+                                <option>Giao thành công</option>
+                                <option>Hủy</option>
+                            </select>
+                        </div>
+                        <div class="col-md-9">
+                            <a id="btnUpdateStatus" data-id="@Model.Id" class="btn btn-primary">Cập nhật</a>
+                            <a class="btn btn-secondary" asp-action="Index" asp-controller="Order">Quay lại</a>
+                        </div>
+           </div>
+                    
+</div>
+</div>
+</div>
+</div>
+</div>

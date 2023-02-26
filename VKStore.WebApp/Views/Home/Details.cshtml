@@ -1,0 +1,107 @@
+﻿@using VKStore.Data.Enums;
+@model VKStore.WebApp.Models.HomeViewModel
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var product = Model.Product;
+}
+
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="#">Trang chủ</a>
+                <a class="breadcrumb-item text-dark" href="#">Sản phẩm</a>
+                <span class="breadcrumb-item active">Chi tiết</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Shop Detail Start -->
+<div class="container-fluid pb-5">
+    <div class="row px-xl-5">
+        <div class="col-lg-4 mb-30">
+            <div id="product-carousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner bg-light">
+                    <div class="carousel-item active">
+                        <center><img style="max-width: 70%; padding: 50px;" class="w-100 h-100" src="@ViewBag.GetUrlApi/@product.ImagePath" alt="Image"></center>
+                    </div>
+                    <div class="carousel-item">
+                        <center><img style="max-width: 70%; padding: 50px;" class="w-100 h-100" src="@ViewBag.GetUrlApi/@product.ImagePath" alt="Image"></center>
+                    </div>
+                    <div class="carousel-item">
+                        <center><img style="max-width: 70%; padding: 50px;" class="w-100 h-100" src="@ViewBag.GetUrlApi/@product.ImagePath" alt="Image"></center>
+                    </div>
+                    <div class="carousel-item">
+                        <center><img style="max-width: 70%; padding: 50px;" class="w-100 h-100" src="@ViewBag.GetUrlApi/@product.ImagePath" alt="Image"></center>
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
+                    <i class="fa fa-2x fa-angle-left text-dark"></i>
+                </a>
+                <a class="carousel-control-next" href="#product-carousel" data-slide="next">
+                    <i class="fa fa-2x fa-angle-right text-dark"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-5 h-auto mb-30">
+            <div class="h-100 bg-light p-30">
+                <h3>@product.Name</h3>
+                
+                <h4 style="color: #fd475a" class="font-weight-semi-bold mb-4">@product.Price.ToString("N0") <sup> đ</sup></h4>
+                <p class="mb-4">
+                    @Html.Raw(@product.Description)
+                </p>
+                <div class="d-flex align-items-center mb-4 pt-2">
+                    <button class="btn btn-danger px-3" id="addToCart" data-id="@product.Id">
+                        <i class="fa fa-shopping-cart mr-1"></i> Thêm vào  giỏ
+                    </button>
+                    <button style="margin-left: 10px;" class="btn btn-dark px-3">
+                         Tiếp tục mua sắm
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 h-auto mb-30">
+            <div class="h-100 bg-light p-30" style="font-size: 13px;>
+                <p class="mb-4" ">
+                    @Html.Raw(@product.System)
+                </p>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<!-- Shop Detail End -->
+<!-- Products Start -->
+<div class="container-fluid py-5">
+    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Sản phẩm liên quan</span></h2>
+    <div class="row px-xl-5">
+        <div class="col">
+            <div class="owl-carousel related-carousel">
+                @foreach(var item in Model.Products){
+                    <div class="product-item bg-light">
+                        <div class="product-img position-relative overflow-hidden">
+                        <center><img class="img-fluid w-100" src="@ViewBag.GetUrlApi/@item.ImagePath" alt="" style="text-align: center;max-width: 30%;margin-top: 30px; margin-bottom: 30px;"></center>
+                            <div class="product-action">
+                            <a class="btn btn-outline-dark btn-square" href="/Home/Details?id=@item.Id"><i class="fa fa-shopping-cart"></i></a>
+                            </div>
+                        </div>
+                        <div class="text-center py-4">
+                            <a class="h6 text-decoration-none text-truncate" href="">@item.Name</a>
+                            <div class="d-flex align-items-center justify-content-center mt-2">
+                            <h6 style="color: #fd475a">@item.Price.ToString("N0")</h6>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Products End -->
