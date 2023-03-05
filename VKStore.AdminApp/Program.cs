@@ -31,7 +31,7 @@ builder.Services.AddScoped<IUserApiClient, UserApiClient>();
 builder.Services.AddScoped<IRoleApiClient, RoleApiClient>();
 builder.Services.AddScoped<IProductApiClient, ProductApiClient>();
 builder.Services.AddScoped<IOrderApiClient, OrderApiClient>();
-
+builder.Services.AddScoped<IContactApiClient, ContactApiClient>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -29,6 +29,6 @@ namespace VKStore.Application.Catalog.Products
         Task<ProductImageViewModel> GetImageById(int imageId);
         Task<PagedResult<ProductViewModel>> GetAllByCategoryId(GetPublicProductPagingRequest request);
         Task<List<ProductViewModel>> GetProductByCategoryId(int categoryId);
-        Task<List<ProductViewModel>> GetListProduct(int take, int? categoryId);
+        Task<List<ProductViewModel>> GetListProduct(int take, int? categoryId, string? keyword);
     }
 }

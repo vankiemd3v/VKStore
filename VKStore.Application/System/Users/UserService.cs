@@ -134,9 +134,13 @@ namespace VKStore.Application.System.Users
 
         public async Task<ApiResult<bool>> Update(Guid id, UserUpdateRequest request)
         {
-            if (await _userManager.Users.AnyAsync(x=>x.Email == request.Email && x.Id != id))
+            var users = await _userManager.Users.Where(x => x.Id != id).ToArrayAsync();
+            foreach(var item in users)
             {
-                return new ApiErrorResult<bool>("Email đã tồn tại");
+                if(item.Email == request.Email)
+                {
+                    return new ApiErrorResult<bool>("Email đã tồn tại");
+                }
             }
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user != null) 

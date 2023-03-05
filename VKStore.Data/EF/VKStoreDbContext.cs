@@ -31,7 +31,7 @@ namespace VKStore.Data.EF
             modelBuilder.ApplyConfiguration(new AppRoleConfiguration());
             modelBuilder.ApplyConfiguration(new ProductImageConfiguration());
             modelBuilder.ApplyConfiguration(new SlideConfiguration());
-
+            modelBuilder.ApplyConfiguration(new ContactConfiguration());
             // Config thêm
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("AppUserClaims");
             modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("AppUserRoles").HasKey(x => new { x.UserId, x.RoleId });
@@ -51,6 +51,7 @@ namespace VKStore.Data.EF
         public DbSet<AppConfig> AppConfigs { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Slide> Slides { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
     }
 
 }

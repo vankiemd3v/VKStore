@@ -216,6 +216,23 @@ namespace VKStore.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AppUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("dfbf9a13-2805-4565-86c4-7ddf907db396"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "ea0bdf61-5354-41de-b12b-605b357649cc",
+                            Email = "vankiemd3v@gmail.com",
+                            EmailConfirmed = false,
+                            FullName = "Văn Kiếm",
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAIAAYagAAAAEOTQF4VEGcXThb79jzVd9gROm6rm0ipOQ09SDVX4VRs+OPIm/QU4bpTHfNCG6SR6Rw==",
+                            PhoneNumber = "0336154196",
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false,
+                            UserName = "vankiemd3v"
+                        });
                 });
 
             modelBuilder.Entity("VKStore.Data.Entities.Cart", b =>
@@ -275,6 +292,38 @@ namespace VKStore.Data.Migrations
                     b.ToTable("Categories", (string)null);
                 });
 
+            modelBuilder.Entity("VKStore.Data.Entities.Contact", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Contacts", (string)null);
+                });
+
             modelBuilder.Entity("VKStore.Data.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -308,9 +357,8 @@ namespace VKStore.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TotalPayment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TotalPayment")
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");

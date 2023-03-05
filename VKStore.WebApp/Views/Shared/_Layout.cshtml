@@ -29,69 +29,23 @@
 <body>
     <!-- Topbar Start -->
     <div class="container-fluid">
-         @*<div class="row bg-secondary py-1 px-xl-5"  >
-           <div class="col-lg-6 d-none d-lg-block">
-                <div class="d-inline-flex align-items-center h-100">
-                    <a class="text-body mr-3" href="">About</a>
-                    <a class="text-body mr-3" href="">Contact</a>
-                    <a class="text-body mr-3" href="">Help</a>
-                    <a class="text-body mr-3" href="">FAQs</a>
-                </div>
-            </div>
-            <div class="col-lg-6 text-center text-lg-right">
-                <div class="d-inline-flex align-items-center">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <button class="dropdown-item" type="button">Sign in</button>
-                            <button class="dropdown-item" type="button">Sign up</button>
-                        </div>
-                    </div>
-                    <div class="btn-group mx-2">
-                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">USD</button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <button class="dropdown-item" type="button">EUR</button>
-                            <button class="dropdown-item" type="button">GBP</button>
-                            <button class="dropdown-item" type="button">CAD</button>
-                        </div>
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">EN</button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <button class="dropdown-item" type="button">FR</button>
-                            <button class="dropdown-item" type="button">AR</button>
-                            <button class="dropdown-item" type="button">RU</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-inline-flex align-items-center d-block d-lg-none">
-                    <a href="" class="btn px-0 ml-2">
-                        <i class="fas fa-heart text-dark"></i>
-                        <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
-                    </a>
-                    <a href="" class="btn px-0 ml-2">
-                        <i class="fas fa-shopping-cart text-dark"></i>
-                        <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
-                    </a>
-                </div>
-            </div>
-        </div>*@
+        
         <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
             <div class="col-lg-4">
-                <a href="" class="text-decoration-none">
-                    <span class="h1 text-uppercase text-danger bg-dark px-2">VK</span>
-                    <span class="h1 text-uppercase text-light bg-danger px-2 ml-n1">Store</span>
+                <a href="/Home/Index" class="text-decoration-none">
+                    <span class="h1 text-uppercase text-primary bg-dark px-2">VK</span>
+                    <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Store</span>
                 </a>
             </div>
             <div class="col-lg-4 col-6 text-left">
-                <form action="">
+                <form asp-action="Product" asp-controller="Home" method="get">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
-                        <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
+                        <input name="keyword" type="text" class="form-control" placeholder="Tìm kiếm sản phẩm" value="@if(ViewBag.Keyword!=null){@ViewBag.Keyword}">
+                        <button type="submit" style="width: 43px; height: 38px; border: none;" >
+                           
                                 <i class="fa fa-search"></i>
-                            </span>
-                        </div>
+                           
+                        </button>
                     </div>
                 </form>
             </div>
@@ -108,7 +62,7 @@
             @await Component.InvokeAsync("SideBar")
             <div class="col-lg-9">
                 <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
-                    <a href="" class="text-decoration-none d-block d-lg-none">
+                    <a href="/Home/Index" class="text-decoration-none d-block d-lg-none">
                         <span class="h1 text-uppercase text-dark bg-light px-2">VK</span>
                         <span class="h1 text-uppercase text-light bg-primary px-2 ml-n1">Store</span>
                     </a>
@@ -119,25 +73,18 @@
                         <div class="navbar-nav mr-auto py-0">
                             <a href="/Home/Index" class="nav-item nav-link active">Trang chủ</a>
                             <a href="/Home/Product" class="nav-item nav-link">Sản phẩm</a>
-                            @*<a href="detail.html" class="nav-item nav-link">Shop Detail</a>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i class="fa fa-angle-down mt-1"></i></a>
-                                <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                                    <a href="cart.html" class="dropdown-item">Shopping Cart</a>
-                                    <a href="checkout.html" class="dropdown-item">Checkout</a>
-                                </div>
-                            </div>*@
-                            <a href="contact.html" class="nav-item nav-link">Liên hệ</a>
+                            <a href="/Cart/Index" class="nav-item nav-link">Giỏ hàng</a>
+                            <a href="/Home/Contact" class="nav-item nav-link">Liên hệ</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
                             <a href="/Cart/Index/" class="btn px-0 ml-3">
                                 <i class="fas fa-shopping-cart text-primary"></i>
                                 <span id="numberCartItem" class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
                             </a>
-                            <a href="" class="btn px-0">
+                           @* <a href="" class="btn px-0">
                                 <i class="fas fa-user text-primary"></i>
                                 <span class="badge text-secondary" style="padding-bottom: 2px;">Tài khoản</span>
-                            </a>
+                            </a>*@
                         </div>
                     </div>
                 </nav>
@@ -146,7 +93,7 @@
     </div>
     <!-- Navbar End -->
 
-    @RenderBody();
+    @RenderBody()
 
 
 
@@ -193,7 +140,7 @@
                          <h5 class="text-secondary text-uppercase mb-4">Theo dõi</h5>
                         <div class="d-flex">
                             <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-primary btn-square mr-2" href="https://www.facebook.com/vankiemd3v/" target="_blank"><i class="fab fa-facebook-f"></i></a>
                             <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
                             <a class="btn btn-primary btn-square" href="#"><i class="fab fa-instagram"></i></a>
                         </div>
@@ -225,6 +172,7 @@
         site.initialize();
     </script>
     @RenderSection("scripts", required: false)
+    @RenderSection("cc", required: false)
 </body>
 
 </html>

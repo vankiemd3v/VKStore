@@ -25,7 +25,7 @@ namespace VKStore.ViewModels.Catalog.Orders
         [Display(Name = "Số điện thoại:")]
         public string ShipPhoneNumber { set; get; }
         [Display(Name = "Tổng tiền:")]
-        public string TotalPayment { set; get; }
+        public int TotalPayment { set; get; }
         [Display(Name = "Trạng thái:")]
         public string Status { set; get; }
         [Display(Name = "Sản phẩm:")]

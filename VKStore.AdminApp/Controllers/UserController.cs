@@ -23,7 +23,7 @@ namespace VKStore.AdminApp.Controllers
             _configuration = configuration;
             _roleApiClient = roleApiClient;
         }
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 1)
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
         {
             var session = HttpContext.Session.GetString("Token");
             var request = new GetUserPagingRequest()
@@ -70,6 +70,7 @@ namespace VKStore.AdminApp.Controllers
                 var user = result.ResultObj;
                 var updateRequest = new UserUpdateRequest()
                 {
+                    Id= id,
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
                     FullName = user.FullName,
@@ -137,16 +138,19 @@ namespace VKStore.AdminApp.Controllers
             var user = await _userApiClient.GetById(id);
             var roles = await _roleApiClient.GetAll();
             var roleAssignRequest = new RoleAssignRequest();
-            foreach (var role in roles.ResultObj)
+            if (roles.ResultObj != null)
             {
-                roleAssignRequest.Roles.Add(new SelectItem()
+                foreach (var role in roles.ResultObj)
                 {
-                    Id = role.Id.ToString(),
-                    Name = role.Name,
-                    Selected = user.ResultObj.Roles.Contains(role.Name)
-                });
+                    roleAssignRequest.Roles.Add(new SelectItem()
+                    {
+                        Id = role.Id.ToString(),
+                        Name = role.Name,
+                        Selected = user.ResultObj.Roles.Contains(role.Name)
+                    });
+                }
             }
-
+            roleAssignRequest.Id = id;
             return roleAssignRequest;
         }
     }

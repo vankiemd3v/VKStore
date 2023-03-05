@@ -40,6 +40,21 @@ namespace VKStore.ApiIntergration
             }
             return JsonConvert.DeserializeObject<bool>(result);
         }
+        public async Task<bool> SendEmail(CreateOrderRequest request)
+        {
+            // convert request sang json
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSetting.BaseAddress]);
+            var response = await client.PostAsync($"/api/orders/email", httpContent);
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonConvert.DeserializeObject<bool>(result);
+            }
+            return JsonConvert.DeserializeObject<bool>(result);
+        }
 
         public async Task<OrderViewModel> Detail(int id)
         {

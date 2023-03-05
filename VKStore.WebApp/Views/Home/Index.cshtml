@@ -21,13 +21,13 @@
                         if (slide.Status == Status.Active)
                         {
                             <div class="carousel-item position-relative active" style="height: 430px;">
-                                <img class="position-absolute w-100 h-100" src="@slide.Image" alt="@slide.Name" style="object-fit: cover;">
+                                <img class="position-absolute w-100 h-100" src="@slide.Image" alt="@slide.Name" style="object-fit: contain; mix-blend-mode: color-burn;">
                             </div>
                         }
                         else
                         {
                             <div class="carousel-item position-relative" style="height: 430px;">
-                                <img class="position-absolute w-100 h-100" src="@slide.Image" alt="@slide.Name" style="object-fit: cover;">
+                                <img class="position-absolute w-100 h-100" src="@slide.Image" alt="@slide.Name" style="object-fit: contain; mix-blend-mode: color-burn;">
                             </div>
                         }
                     }
@@ -72,7 +72,7 @@
             <div class="col-lg-2 col-md-4 col-sm-6 pb-1">
                 <div class="product-item bg-light mb-4">
                     <div class="product-img position-relative overflow-hidden">
-                        <center><img class="img-fluid w-100" src="@ViewBag.GetUrlApi/@product.ImagePath" alt="" style="text-align: center;max-width: 60%;margin-top: 30px; margin-bottom: 30px;"></center>
+                        <center><img class="img-fluid w-100" src="@ViewBag.GetUrlApi/@product.ImagePath" alt="" style="text-align: center;max-width: 60%;margin-top: 30px; aspect-ratio: 2/2; object-fit: contain; "></center>
                         <div class="product-action">
                             <a class="btn btn-outline-dark btn-square" href="/Home/Details?id=@product.Id"><i class="fa fa-shopping-cart"></i></a>
                         </div>
@@ -89,7 +89,7 @@
       
     </div>
     <div style="text-align: center;">
-        <a type="button" href="/Home/Product/" class="btn btn-primary">Xem thêm</a>
+        <button class="btn btn-primary"><a style="text-decoration: none; color: #6C757D" href="/Home/Product/">Xem thêm</></button>
     </div>
 </div>
 <!-- Products End -->

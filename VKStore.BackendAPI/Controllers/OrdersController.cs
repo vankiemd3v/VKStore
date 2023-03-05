@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MimeKit;
+using System.IO;
+using System.Reflection.PortableExecutable;
 using System.Text.Json;
+using System.Web;
 using VKStore.ApiIntergration;
 using VKStore.Application.Catalog.Orders;
 using VKStore.Application.Catalog.Products;
@@ -19,10 +22,13 @@ namespace VKStore.BackendAPI.Controllers
     {
         private readonly IOrderService _orderService;
         private readonly IProductService _productService;
-        public OrdersController(IOrderService orderService, IProductService productService)
+        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _env;
+
+        public OrdersController(IOrderService orderService, IProductService productService, Microsoft.AspNetCore.Hosting.IHostingEnvironment env)
         {
             _orderService = orderService;
             _productService = productService;
+            _env = env;
         }
         [HttpGet("paging")]
         public async Task<IActionResult> Get([FromQuery] GetOrdersPagingRequest request)
@@ -53,34 +59,40 @@ namespace VKStore.BackendAPI.Controllers
             {
                 return BadRequest(result);
             }
+            return Ok(result);
+        }
+        [HttpPost("email")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfigEmail([FromBody] CreateOrderRequest request)
+        {
             // Gửi mail cho shop
-            var mess = await System.IO.File.ReadAllTextAsync(@"D:\DỰ ÁN\VKStore\VKStore.BackendAPI\wwwroot\html\order.html");
+            var mess = await System.IO.File.ReadAllTextAsync(_env.WebRootPath + "/html/order.html");
             mess = mess.Replace("{{Name}}", request.ShipName);
             mess = mess.Replace("{{PhoneNumber}}", request.ShipPhoneNumber);
             mess = mess.Replace("{{Email}}", request.ShipEmail);
             mess = mess.Replace("{{Address}}", request.ShipAddress);
-            mess = mess.Replace("{{TotalPayment}}", request.TotalPayment);
+            mess = mess.Replace("{{TotalPayment}}", request.TotalPayment.ToString("N0"));
             var listProductName = new List<ProductCartViewModel>();
             foreach (var item in request.OrderDetails)
             {
-               var product = await _productService.GetById(item.ProductId);
-               listProductName.Add(new ProductCartViewModel()
-               {
-                   Name = product.Name,
-                   Quantity= item.Quantity,
-               });
+                var product = await _productService.GetById(item.ProductId);
+                listProductName.Add(new ProductCartViewModel()
+                {
+                    Name = product.Name,
+                    Quantity = item.Quantity,
+                });
             }
             var json = JsonSerializer.Serialize(listProductName);
-            mess = mess.Replace("{{ListProductName}}", json) ;
-            SendEmail(mess, null, "Đơn hàng mới");
+            mess = mess.Replace("{{ListProductName}}", json);
+            await SendEmail(mess, null, "Đơn hàng mới");
 
             // Gửi mail cho Customer
-            var messCus = await System.IO.File.ReadAllTextAsync(@"D:\DỰ ÁN\VKStore\VKStore.BackendAPI\wwwroot\html\orderCustomer.html");
+            var messCus = await System.IO.File.ReadAllTextAsync(_env.WebRootPath + "/html/orderCustomer.html");
             messCus = messCus.Replace("{{Name}}", request.ShipName);
             messCus = messCus.Replace("{{PhoneNumber}}", request.ShipPhoneNumber);
             messCus = messCus.Replace("{{Email}}", request.ShipEmail);
             messCus = messCus.Replace("{{Address}}", request.ShipAddress);
-            messCus = messCus.Replace("{{TotalPayment}}", request.TotalPayment);
+            messCus = messCus.Replace("{{TotalPayment}}", request.TotalPayment.ToString("N0")); ;
             var products = new List<ProductCartViewModel>();
             foreach (var item in request.OrderDetails)
             {
@@ -93,11 +105,11 @@ namespace VKStore.BackendAPI.Controllers
             }
             var jsonCus = JsonSerializer.Serialize(products);
             mess = mess.Replace("{{ListProductName}}", jsonCus);
-            SendEmail(mess, request.ShipEmail, "Đặt hàng thành công");
-            return Ok(result);
+            await SendEmail(mess, request.ShipEmail, "Đặt hàng thành công");
+            return Ok(true);
         }
         [HttpPost]
-        private IActionResult SendEmail(string mess, string? emailCustomer, string subject)
+        public async Task<IActionResult> SendEmail(string mess, string? emailCustomer, string subject)
         {
             var email = new MimeMessage();
             email.From.Add(MailboxAddress.Parse("s2xbladeno1@gmail.com"));

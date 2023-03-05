@@ -11,9 +11,9 @@
     <div class="row px-xl-5">
         <div class="col-12">
             <nav class="breadcrumb bg-light mb-30">
-                <a class="breadcrumb-item text-dark" href="#">Trang chủ</a>
-                <a class="breadcrumb-item text-dark" href="#">Sản phẩm</a>
-                <span class="breadcrumb-item active">Chi tiết</span>
+                <a class="breadcrumb-item text-dark" href="/Home/Index">Trang chủ</a>
+                <a class="breadcrumb-item text-dark" href="/Home/Product">Sản phẩm</a>
+                <span class="breadcrumb-item active">Chi tiết sản phẩm</span>
             </nav>
         </div>
     </div>
@@ -26,16 +26,16 @@
             <div id="product-carousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner bg-light">
                     <div class="carousel-item active">
-                        <center><img style="max-width: 70%; padding: 50px;" class="w-100 h-100" src="@ViewBag.GetUrlApi/@product.ImagePath" alt="Image"></center>
+                        <center><img style="max-width: 70%; padding: 50px; aspect-ratio: 2/2; object-fit: contain;" class="w-100 h-100" src="@ViewBag.GetUrlApi/@product.ImagePath" alt="Image"></center>
                     </div>
                     <div class="carousel-item">
-                        <center><img style="max-width: 70%; padding: 50px;" class="w-100 h-100" src="@ViewBag.GetUrlApi/@product.ImagePath" alt="Image"></center>
+                        <center><img style="max-width: 70%; padding: 50px; aspect-ratio: 2/2; object-fit: contain;" class="w-100 h-100" src="@ViewBag.GetUrlApi/@product.ImagePath" alt="Image"></center>
                     </div>
                     <div class="carousel-item">
-                        <center><img style="max-width: 70%; padding: 50px;" class="w-100 h-100" src="@ViewBag.GetUrlApi/@product.ImagePath" alt="Image"></center>
+                        <center><img style="max-width: 70%; padding: 50px; aspect-ratio: 2/2; object-fit: contain;" class="w-100 h-100" src="@ViewBag.GetUrlApi/@product.ImagePath" alt="Image"></center>
                     </div>
                     <div class="carousel-item">
-                        <center><img style="max-width: 70%; padding: 50px;" class="w-100 h-100" src="@ViewBag.GetUrlApi/@product.ImagePath" alt="Image"></center>
+                        <center><img style="max-width: 70%; padding: 50px; aspect-ratio: 2/2; object-fit: contain;" class="w-100 h-100" src="@ViewBag.GetUrlApi/@product.ImagePath" alt="Image"></center>
                     </div>
                 </div>
                 <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
@@ -55,13 +55,17 @@
                 <p class="mb-4">
                     @Html.Raw(@product.Description)
                 </p>
-                <div class="d-flex align-items-center mb-4 pt-2">
-                    <button class="btn btn-danger px-3" id="addToCart" data-id="@product.Id">
-                        <i class="fa fa-shopping-cart mr-1"></i> Thêm vào  giỏ
-                    </button>
-                    <button style="margin-left: 10px;" class="btn btn-dark px-3">
-                         Tiếp tục mua sắm
-                    </button>
+                <div  class="d-flex align-items-center mb-4 pt-2">
+                    <div class="col-md-12">
+                        <div class="row">
+                        <button class="btn btn-primary px-3 col-md-3" id="addToCart" data-id="@product.Id">
+                            <i class="fa fa-shopping-cart mr-1"></i> Thêm vào  giỏ
+                        </button>
+                        <button  class="btn btn-dark px-3 col-md-3">
+                                <a style="text-decoration: none;" href="/Home/Product">Tiếp tục mua sắm</a>
+                        </button>
+                    </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -78,14 +82,14 @@
 <!-- Shop Detail End -->
 <!-- Products Start -->
 <div class="container-fluid py-5">
-    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Sản phẩm liên quan</span></h2>
+    <h4 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Sản phẩm liên quan</span></h2>
     <div class="row px-xl-5">
         <div class="col">
             <div class="owl-carousel related-carousel">
                 @foreach(var item in Model.Products){
                     <div class="product-item bg-light">
                         <div class="product-img position-relative overflow-hidden">
-                        <center><img class="img-fluid w-100" src="@ViewBag.GetUrlApi/@item.ImagePath" alt="" style="text-align: center;max-width: 30%;margin-top: 30px; margin-bottom: 30px;"></center>
+                        <center><img class="img-fluid w-100" src="@ViewBag.GetUrlApi/@item.ImagePath" alt="" style="text-align: center;max-width: 30%;margin-top: 30px; aspect-ratio: 2/2; object-fit: contain;"></center>
                             <div class="product-action">
                             <a class="btn btn-outline-dark btn-square" href="/Home/Details?id=@item.Id"><i class="fa fa-shopping-cart"></i></a>
                             </div>
@@ -93,7 +97,7 @@
                         <div class="text-center py-4">
                             <a class="h6 text-decoration-none text-truncate" href="">@item.Name</a>
                             <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h6 style="color: #fd475a">@item.Price.ToString("N0")</h6>
+                                <h6 style="color: #fd475a">@item.Price.ToString("N0") <sup> đ</sup></h6>
                             </div>
                             
                         </div>

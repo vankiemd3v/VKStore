@@ -11,14 +11,19 @@ namespace VKStore.ViewModels.Catalog.Products
     public class ProductCreateRequest
     {
         [Display(Name="Tên sản phẩm")]
+        [Required(ErrorMessage ="Nhập tên sản phẩm")]
         public string Name { get; set; }
         [Display(Name = "Giá")]
+        [Required(ErrorMessage = "Nhập giá sản phẩm")]
         public int Price { get; set; }
-        [Display(Name = "Số lượng")]
+        [Range(1, int.MaxValue)]
+        [Required(ErrorMessage = "Nhập số lượng")]
         public int Quantity { get; set; }
         [Display(Name = "Mô tả")]
+        [Required(ErrorMessage = "Nhập mô tả sản phẩm")]
         public string Description { get; set; }
         [Display(Name="Cấu hình")]
+        [Required(ErrorMessage = "Nhập cấu hình sản phẩm")]
         public string System { get; set; }
         [Display(Name = "Danh mục sản phẩm")]
         public int CategoryId { get; set; }

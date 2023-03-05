@@ -4,6 +4,7 @@ using VKStore.Application.Catalog.Products;
 using VKStore.ViewModels.Catalog.Categories;
 using VKStore.ViewModels.Catalog.ProductImages;
 using VKStore.ViewModels.Catalog.Products;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace VKStore.BackendAPI.Controllers
 {
@@ -86,13 +87,13 @@ namespace VKStore.BackendAPI.Controllers
                 return BadRequest();
             return Ok();
         }
-        [HttpDelete("{productId}")]
-        public async Task<IActionResult> Delete(int productId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var result = await _productService.Delete(productId);
+            var result = await _productService.Delete(id);
             if (result == 0)
                 return BadRequest();
-            return Ok();
+            return Ok(result);
         }
 
         // Images
@@ -144,16 +145,23 @@ namespace VKStore.BackendAPI.Controllers
         }
         [HttpGet("recent-products/{take}")]
         [AllowAnonymous]
-        public async Task<IActionResult> Get([FromRoute]int take, int? categoryId)
+        public async Task<IActionResult> GetProduct([FromRoute]int take)
         {
-            var products = await _productService.GetListProduct(take, categoryId);
+            var products = await _productService.GetListProduct(take, null, null);
             return Ok(products);
         }
         [HttpGet("recent-products/{take}/{categoryId}")]
         [AllowAnonymous]
-        public async Task<IActionResult> Get([FromRoute] int take, int categoryId)
+        public async Task<IActionResult> GetProductByCategoryId([FromRoute] int take, int categoryId)
         {
-            var products = await _productService.GetListProduct(take, categoryId);
+            var products = await _productService.GetListProduct(take, categoryId, null);
+            return Ok(products);
+        }
+        [HttpGet("search/{keyword}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetProductByKeyword([FromRoute] string keyword)
+        {
+            var products = await _productService.GetListProduct(100, null, keyword);
             return Ok(products);
         }
     }

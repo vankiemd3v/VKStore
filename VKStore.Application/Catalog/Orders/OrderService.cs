@@ -45,7 +45,7 @@ namespace VKStore.Application.Catalog.Orders
             order.Status = StatusOrder.Inprogess;
             order.TotalPayment = request.TotalPayment;
             _context.Orders.Add(order);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             int id = order.Id;
             var orderDetails = new List<OrderDetail>();
             foreach (var item in request.OrderDetails)
@@ -87,6 +87,7 @@ namespace VKStore.Application.Catalog.Orders
             var data = await _context.Orders.Where(x=>x.Id == id).Select(x => new OrderViewModel()
             {
                 Id = x.Id,
+                OrderDate = x.OrderDate,
                 ShipName = x.ShipName,
                 ShipPhoneNumber = x.ShipPhoneNumber,
                 ShipEmail = x.ShipEmail,
@@ -103,10 +104,11 @@ namespace VKStore.Application.Catalog.Orders
             var query = from o in _context.Orders select new { o };
             if (!string.IsNullOrEmpty(request.Keyword))
                 query =  query.Where(x => x.o.ShipName.Contains(request.Keyword));
-            var data = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)
+            var data = await query.OrderByDescending(x=>x.o.OrderDate).Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)
                             .Select(x => new OrderViewModel()
                             {
                                 Id = x.o.Id,
+                                OrderDate = x.o.OrderDate,
                                 ShipName = x.o.ShipName,
                                 ShipPhoneNumber = x.o.ShipPhoneNumber,
                                 ShipEmail = x.o.ShipEmail,

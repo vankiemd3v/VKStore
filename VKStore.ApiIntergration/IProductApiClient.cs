@@ -10,8 +10,9 @@ namespace VKStore.ApiIntergration
         Task<PagedResult<ProductViewModel>> GetProductsPagings(GetManageProductPagingRequest request);
         Task<bool> CreateProduct(ProductCreateRequest request);
         Task<bool> UpdateProduct(ProductUpdateRequest request);
+        Task<bool> DeleteProduct(int id);
         Task<ApiResult<List<CategoryViewModel>>> GetListCategory();
-        Task<List<ProductViewModel>> GetListProduct(int take, int? categoryId);
+        Task<List<ProductViewModel>> GetListProduct(int take, int? categoryId, string? keyword);
         //Task<ApiResult<List<ProductViewModel>>> GetListProductByCategory(int categoryId);
         string GetUrlApi();
         Task<ProductViewModel> GetProduct(int id);

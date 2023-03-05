@@ -50,6 +50,7 @@ namespace VKStore.ApiIntergration
             requestContent.Add(new StringContent(request.Quantity.ToString()), "quantity");
             requestContent.Add(new StringContent(request.Name.ToString()), "name");
             requestContent.Add(new StringContent(request.Description.ToString()), "description");
+            requestContent.Add(new StringContent(request.System.ToString()), "system");
             requestContent.Add(new StringContent(request.CategoryId.ToString()), "categoryId");
             var response = await client.PostAsync($"/api/products/", requestContent);
             return response.IsSuccessStatusCode;
@@ -100,11 +101,21 @@ namespace VKStore.ApiIntergration
             return JsonConvert.DeserializeObject<ApiErrorResult<List<CategoryViewModel>>>(result);
         }
 
-        public async Task<List<ProductViewModel>> GetListProduct(int take, int? categoryId)
+        public async Task<List<ProductViewModel>> GetListProduct(int take, int? categoryId, string? keyword)
         {
-            if(categoryId != null)
+            if(categoryId != null && keyword == null)
             {
                 var data = await GetListAsync<ProductViewModel>($"/api/products/recent-products/{take}/{categoryId}");
+                return data;
+            }
+            if (categoryId == null && keyword != null)
+            {
+                var data = await GetListAsync<ProductViewModel>($"/api/products/search/{keyword}");
+                return data;
+            }
+            if (categoryId != null && keyword != null)
+            {
+                var data = await GetListAsync<ProductViewModel>($"/api/products/recent-products/{take}/{categoryId}/{keyword}");
                 return data;
             }
             else
@@ -157,6 +168,21 @@ namespace VKStore.ApiIntergration
                 return JsonConvert.DeserializeObject<ProductViewModel>(result);
             }
             return JsonConvert.DeserializeObject<ProductViewModel>(result);
+        }
+
+        public async Task<bool> DeleteProduct(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSetting.BaseAddress]);
+            var sessions = _contextAccessor.HttpContext.Session.GetString(SystemConstants.AppSetting.Token);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+            var response = await client.DeleteAsync($"api/products/{id}");
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonConvert.DeserializeObject<bool>(result);
+            }
+            return JsonConvert.DeserializeObject<bool>(result);
         }
     }
 }

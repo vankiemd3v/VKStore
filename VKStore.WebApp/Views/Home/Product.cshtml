@@ -1,5 +1,5 @@
 ﻿@using VKStore.Data.Enums;
-@model HomeViewModel
+@model VKStore.WebApp.Models.HomeViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -40,7 +40,7 @@
             <div class="col-lg-2 col-md-4 col-sm-6 pb-1">
                 <div class="product-item bg-light mb-4">
                     <div class="product-img position-relative overflow-hidden">
-                        <center><img class="img-fluid w-100" src="@ViewBag.GetUrlApi/@product.ImagePath" alt="" style="text-align: center;max-width: 60%;margin-top: 30px; margin-bottom: 30px;"></center>
+                        <center><img class="img-fluid w-100" src="@ViewBag.GetUrlApi/@product.ImagePath" alt="" style="text-align: center;max-width: 60%;margin-top: 30px; aspect-ratio: 2/2; object-fit: contain; "></center>
                         <div class="product-action">
                             <a class="btn btn-outline-dark btn-square" href="/Home/Details?id=@product.Id"><i class="fa fa-shopping-cart"></i></a>
                         </div>

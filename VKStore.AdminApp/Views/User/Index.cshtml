@@ -13,7 +13,7 @@
     </script>
 }
 <div class="container-fluid px-4">
-    <h3 class="mt-4">QUẢN TRỊ NGƯỜI DÙNG</h3>
+    <h3 class="mt-4">NGƯỜI DÙNG</h3>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
         <li class="breadcrumb-item active">Người dùng</li>
@@ -55,7 +55,7 @@
                         <th>Tài khoản</th>
                         <th>Số điện thoại</th>
                         @*<th>Số điện thoại</th>*@
-                        <th>Hành động</th>
+                        <th style="text-align:center;">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -66,11 +66,11 @@
                             <td>@Html.DisplayFor(modelItem => item.UserName)</td>
                             <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
                             @*<td>2011/04/25</td>*@
-                            <td>
-                                @Html.ActionLink("Sửa", "Update", new {  id=item.Id  }) |
-                                @Html.ActionLink("Xem", "Details", new { id=item.Id }) |
-                                @Html.ActionLink("Xóa", "Delete", new { id=item.Id })
-                                @Html.ActionLink("Phân quyền", "RoleAssign", new { id=item.Id })
+                            <td style="text-align:center;">
+                                <a style="padding: 1px;" href="/User/Details?id=@item.Id" class="btn btn-primary"> <i class="bi bi-info-circle"></i></a>
+                                <a href="/User/Update?id=@item.Id" type="button" class="btn btn-success" style="padding: 1px;"><i class="bi bi-pencil-square"></i></a>
+                                <a href="/User/RoleAssign?id=@item.Id" type="button" class="btn btn-secondary" style="padding: 1px;"><i class="bi bi-person-check"></i></a>
+                                <a href="/User/Delete?id=@item.Id" type="button" class="btn btn-danger" style="padding: 1px;"><i class="bi bi-trash-fill"></i></a>
                             </td>
                         </tr>
                     }

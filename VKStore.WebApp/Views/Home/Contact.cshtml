@@ -1,0 +1,111 @@
+﻿@model VKStore.ViewModels.Catalog.Contacts.CreateContactRequest;
+@{
+    ViewData["Title"] = "Contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section cc{
+    <script>
+        function initMap() {
+            const uluru = { lat: 16.3468518, lng: 107.9008365 };
+  const map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 15,
+    center: uluru,
+  });
+  const infowindow = new google.maps.InfoWindow({
+    content: "VK Store",
+    ariaLabel: "VK Store",
+  });
+  const marker = new google.maps.Marker({
+    position: uluru,
+    map,
+    title: "VK Store",
+  });
+
+  marker.addListener("click", () => {
+    infowindow.open({
+      anchor: marker,
+      map,
+    });
+  });
+}
+
+window.initMap = initMap;
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?AIzaSyB-0sp1kSbcsuNdC13J3NRBSnd5SDH6vkQ&callback=initMap&v=weekly"></script>
+}
+<style>
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    #map {
+        height: 300px;
+    }
+</style>
+ <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a  class="breadcrumb-item text-dark" href="/Home">Trang chủ</a>
+                <span class="breadcrumb-item active"><a href="/Home/Contact" style="color: #3D464D !important">Liên hệ</a></span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+
+    <!-- Contact Start -->
+    <div class="container-fluid">
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Gửi phản hồi</span></h2>
+        <div class="row px-xl-5">
+            <div class="col-lg-7 mb-5">
+                <div class="contact-form bg-light p-30">
+                    <div id="success"></div>
+                <form asp-action="Contact" asp-controller="Home" method="post">
+                        
+                        <div class="control-group">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Họ và tên"
+                                required="required" data-validation-required-message="Vui lòng nhập họ và tên" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                                required="required" data-validation-required-message="Vui lòng nhập Email" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <input type="text" class="form-control" id="subject" name="subject" placeholder="Tiêu đề"
+                                required="required" data-validation-required-message="Vui lòng nhập Tiêu đề" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <textarea class="form-control" rows="8" name="content" id="message" placeholder="Nội dung"
+                                required="required"
+                                data-validation-required-message="Vui lòng nhập Nội dung"></textarea>
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary py-2 px-4" type="submit" >Gửi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-5 mb-5">
+                <div id="map" class="bg-light p-30 mb-30">
+                    
+                </div>
+                <div class="bg-light p-30 mb-3">
+                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>Vinh Hiền, Phú Lộc, Huế</p>
+                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>vankiemd3v@gmail.comm</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt text-primary mr-3"></i>0336.154.196</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Contact End -->
+

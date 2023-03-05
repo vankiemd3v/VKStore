@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MimeKit;
 using Newtonsoft.Json;
+using System.Security.Policy;
 using VKStore.ApiIntergration;
 using VKStore.Data.Enums;
 using VKStore.Ultilities.Constants;
@@ -21,9 +22,7 @@ namespace VKStore.WebApp.Controllers
         }
         public IActionResult Index()
         {
-            var url = _productApiClient.GetUrlApi();
-            var UrlImage = url + "user-content";
-            ViewBag.GetUrlApi = UrlImage;
+            ViewBag.GetUrlApi = GetUrlImage();
             return View();
         }
         public async Task<IActionResult> AddToCart(int id)
@@ -87,22 +86,34 @@ namespace VKStore.WebApp.Controllers
             return Ok(currentCart);
         }
         [HttpPost]
-        public async Task<IActionResult> Order(string name, string phoneNumber, string address, string email, string totalPayment) 
+        public async Task<IActionResult> Index(CreateOrderRequestValidator requestValid) 
         {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.GetUrlApi = GetUrlImage();
+                return View();
+            }
             var session = HttpContext.Session.GetString(SystemConstants.CartSession);
+            if (session == null)
+            {
+                return Json(new
+                {
+                    cart = false
+                });
+            }
             List<CartItemViewModel> currentCart = new List<CartItemViewModel>();
             if (session != null)
                 currentCart = JsonConvert.DeserializeObject<List<CartItemViewModel>>(session);
             var request = new CreateOrderRequest();
-            request.ShipPhoneNumber = phoneNumber;
-            request.ShipAddress = address;
-            request.ShipEmail = email;
-            request.ShipName = name;
-            request.TotalPayment = totalPayment;
+            request.ShipAddress = requestValid.ShipAddress;
+            request.ShipPhoneNumber = requestValid.ShipPhoneNumber;
+            request.ShipEmail = requestValid.ShipEmail;
+            request.ShipName = requestValid.ShipName;
             request.Status = SystemConstants.StatusOrder.Inprogess;
             var products = new List<OrderDetailViewModel>();
             foreach(var item in currentCart)
             {
+                request.TotalPayment += (item.Price * item.Quantity);
                 products.Add(new OrderDetailViewModel()
                 {
                     ProductId= item.ProductId,
@@ -112,17 +123,30 @@ namespace VKStore.WebApp.Controllers
             }
             request.OrderDetails = products;
             var result = await _orderApiClient.CreateOrder(request);
-            if (result)
+            var sendEmail = await _orderApiClient.SendEmail(request);
+            if (sendEmail && result)
             {
-                currentCart = null;
-                return RedirectToAction("OrderSuccess", "Cart");
+                HttpContext.Session.Remove(SystemConstants.CartSession);
+                return Json(new
+                {
+                    status = true
+                });
             }
-            return View(result);
+            return Json(new
+            {
+                status = false
+            });
         }
 
-        public IActionResult OrderSuccess()
+        public async Task<IActionResult> OrderSuccess()
         {
             return View();
+        }
+        private string GetUrlImage()
+        {
+            var url = _productApiClient.GetUrlApi();
+            var UrlImage = url + "user-content";
+            return UrlImage;
         }
     }
 }

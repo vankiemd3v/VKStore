@@ -59,22 +59,20 @@
                         <th>Giá</th>
                         <th>Số lượng</th>
                         <th>Danh mục sản phẩm</th>
-                        <th>Hành động</th>
+                        <th style="text-align: center;">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model.Items)
                     {
                         <tr>
-                            <td> @Html.DisplayFor(modelItem => item.Name)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
                             <td>@Html.DisplayFor(modelItem => item.Price)</td>
                             <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
                             <td>@Html.DisplayFor(modelItem => item.CategoryName)</td>
-                            <td>
-                                @Html.ActionLink("Sửa", "Update", new {  id=item.Id  }) |
-                                @Html.ActionLink("Xem", "Details", new { id=item.Id }) |
-                                @Html.ActionLink("Xóa", "Delete", new { id=item.Id })
-                                @Html.ActionLink("Phân quyền", "RoleAssign", new { id=item.Id })
+                            <td style="text-align: center;">
+                                <a style="padding: 1px;" href="/Product/Update?id=@item.Id" class="btn btn-success"><i class="bi bi-pencil-square"></i></a>
+                                <a href="/Product/Delete?id=@item.Id" type="button" class="btn btn-danger" style="padding: 1px;"><i class="bi bi-trash-fill"></i></a>
                             </td>
                         </tr>
                     }

@@ -33,14 +33,14 @@
 <!-- Categories End -->
 <!-- Products Start -->
 <div class="container-fluid pt-5 pb-3">
-    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">@ViewBag.CategoryName</span></h2>
+    <h4 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">@ViewBag.CategoryName</span></h4>
     <div class="row px-xl-5">
         @foreach (var product in Model.Products)
         {
             <div class="col-lg-2 col-md-4 col-sm-6 pb-1">
                 <div class="product-item bg-light mb-4">
                     <div class="product-img position-relative overflow-hidden">
-                        <center><img class="img-fluid w-100" src="@ViewBag.GetUrlApi/@product.ImagePath" alt="" style="text-align: center;max-width: 60%;margin-top: 30px; margin-bottom: 30px;"></center>
+                        <center><img class="img-fluid w-100" src="@ViewBag.GetUrlApi/@product.ImagePath" alt="" style="text-align: center;max-width: 60%;margin-top: 30px;aspect-ratio: 2/2; object-fit: contain;"></center>
                         <div class="product-action">
                             <a class="btn btn-outline-dark btn-square" href="/Home/Details?id=@product.Id"><i class="fa fa-shopping-cart"></i></a>
                         </div>
@@ -48,7 +48,7 @@
                     <div class="text-center py-4">
                         <a style="font-size: 13.5px;" class="h6 text-decoration-none text-truncate" href="">@product.Name</a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h6>@product.Price.ToString("N0")<sup> đ</sup></h6>
+                            <h6 style="color: #fd475a">@product.Price.ToString("N0")<sup> đ</sup></h6>
                         </div>
                     </div>
                 </div>

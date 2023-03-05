@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VKStore.Data.Enums;
+using Microsoft.AspNetCore.Identity;
 
 namespace VKStore.Data.Extensions
 {
@@ -13,10 +14,17 @@ namespace VKStore.Data.Extensions
     {
         public static void Seed(this ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Product>().HasData(
-            //    new Product() { Id = 1, Name = "IPhone Xs Max", Price = 100 },
-            //    new Product() { Id = 2, Name = "IPhone 14 Pro Max", Price = 999 }
-            //    );
+            var hasher = new PasswordHasher<AppUser>();
+            modelBuilder.Entity<AppUser>().HasData(
+                new AppUser() {
+                    Id = Guid.NewGuid(),
+                    FullName = "Văn Kiếm",
+                    UserName = "vankiemd3v",
+                    PasswordHash = hasher.HashPassword(null, "Admin123@"),
+                    Email = "vankiemd3v@gmail.com",
+                    PhoneNumber = "0336154196",
+                }
+                ); ;
             modelBuilder.Entity<Slide>().HasData(
                 new Slide() { Id = 1, Name = "Slide số 1", Description = "Slide số 1", SortOrder = 1, Url ="#", Image= "/img/carousel-1.jpg", Status = Status.Active},
                 new Slide() { Id = 2, Name = "Slide số 2", Description = "Slide số 2", SortOrder = 2, Url = "#", Image = "/img/carousel-2.jpg", Status = Status.InActive },

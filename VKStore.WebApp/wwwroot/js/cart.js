@@ -22,34 +22,67 @@
             const id = $(this).data('id');
             updateCart(id, 0);
         });
-        $('#btnOrder').off('click').on('click', function () {
-            const name = $('#txt_name').val();
-            const phoneNumber = $('#txt_phoneNumber').val();
-            const address = $('#txt_address').val();
-            const email = $('#txt_email').val();
-            const totalPayment = $('#totalPayment').text();
-            $.ajax({
-                type: "POST",
-                url: '/Cart/Order',
-                data: {
-                    name: name,
-                    phoneNumber: phoneNumber,
-                    address: address,
-                    email: email,
-                    totalPayment: totalPayment
-                },
-                success: function (res) {
-                    if (res.status == true) {
-                        $('#numberCartItem').text(res.length);
-                        loadData();
-                        window.location.href = "/Cart/OrderSuccess"
+        $('body').on('click', '#btnOrder', function (e) {
+            e.preventDefault();
+            $('#btnOrder').attr('disabled', true);
+            const shipName = $('#shipName').val();
+            const shipPhoneNumber = $('#shipPhoneNumber').val();
+            const shipAddress = $('#shipAddress').val();
+            const shipEmail = $('#shipEmail').val();
+            if (shipName == "") {
+                $('#btnOrder').attr('disabled', false);
+                $('#shipNameValid').text('Vui lòng nhập họ và tên');
+
+            } else if (shipAddress == "") {
+                $('#btnOrder').attr('disabled', false);
+                $('#shipNameValid').text('');
+                $('#shipAddressValid').text('Vui lòng nhập địa chỉ nhận hàng');
+            }
+            else if (shipEmail == "") {
+                $('#btnOrder').attr('disabled', false);
+                $('#shipNameValid').text('');
+                $('#shipAddressValid').text('');
+                $('#shipEmailValid').text('Vui lòng nhập Email');
+            }
+            
+            else if (shipPhoneNumber == "") {
+                $('#btnOrder').attr('disabled', false);
+                $('#shipNameValid').text('');
+                $('#shipAddressValid').text('');
+                $('#shipEmailValid').text('');
+                $('#shipPhoneNumberValid').text('Vui lòng nhập số điện thoại');
+            }
+            else {
+                $('#shipNameValid').text('');
+                $('#shipAddressValid').text('');
+                $('#shipEmailValid').text('');
+                $('#shipPhoneNumberValid').text('');
+                $.ajax({
+                    type: "POST",
+                    url: '/Cart/Index',
+                    data: {
+                        shipName: shipName,
+                        shipPhoneNumber: shipPhoneNumber,
+                        shipAddress: shipAddress,
+                        shipEmail: shipEmail
+                    },
+                    success: function (res) {
+                        if (res.status == true) {
+                            window.location.href = "/Cart/OrderSuccess"
+                        }
+                        if (res.cart == false) {
+                            $('#btnOrder').attr('disabled', false);
+                            $('#shipPhoneNumberValid').text('Chưa có sản phẩm trong giỏ hàng');
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
                     }
-                },
-                error: function (err) {
-                    console.log(err);
-                }
-            });
+                });
+            }
+            
         });
+
     }
 
     function updateCart(id, quantity) {

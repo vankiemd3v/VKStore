@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Data;
 using VKStore.ApiIntergration;
@@ -41,13 +42,6 @@ namespace VKStore.AdminApp.Controllers
                 Text= x.Name,
                 Selected = categoryId == x.Id
             });
-            //List<SelectListItem> items = new();
-            //foreach (var item in categories.ResultObj)
-            //{
-            //    var category = new SelectListItem { Value = item.Id.ToString(), Text = item.Name, Selected = };
-            //    items.Add(category);
-            //};
-            //ViewBag.ListCategory = items;
             var data = await _productApiClient.GetProductsPagings(request);
             return View(data);
         }
@@ -67,10 +61,19 @@ namespace VKStore.AdminApp.Controllers
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
         {
-
             // bắt lỗi validation
             if (!ModelState.IsValid)
-                return View();
+            {
+                var categories = await _productApiClient.GetListCategory();
+                List<SelectListItem> items = new();
+                foreach (var item in categories.ResultObj)
+                {
+                    var category = new SelectListItem { Value = item.Id.ToString(), Text = item.Name };
+                    items.Add(category);
+                };
+                ViewBag.ListCategory = items;
+                return View(request);
+            }
             var result = await _productApiClient.CreateProduct(request);
             if (result)
             {
@@ -111,6 +114,18 @@ namespace VKStore.AdminApp.Controllers
             // fail trả về 1 error message
             ModelState.AddModelError("", "Cập nhật sản phẩm thất bại");
             return View(request);
+        }
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _productApiClient.DeleteProduct(id);
+            if (result)
+            {
+                TempData["result"] = "Xóa thành công";
+                return RedirectToAction("Index", "Product");
+            }
+            // fail trả về 1 error message
+            ModelState.AddModelError("", "Xóa thành công");
+            return View();
         }
     }
 }

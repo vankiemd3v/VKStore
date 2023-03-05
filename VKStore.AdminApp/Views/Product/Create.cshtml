@@ -30,15 +30,15 @@
 }
 
 <div class="container-fluid px-4">
-    <h3 class="mt-4">QUẢN TRỊ SẢN PHẨM</h3>
+    <h3 class="mt-4">SẢN PHẨM</h3>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
-        <li class="breadcrumb-item active">Sản phẩm</li>
+        <li class="breadcrumb-item active"><a href="/Product/Index">Sản phẩm</a></li>
         <li class="breadcrumb-item active">Thêm mới</li>
     </ol>
     <div class="card mb-4">
         <div class="card-header">
-            <a class="btn btn-success" asp-action="Index" asp-controller="Product">Về danh sách</a>
+            <b>THÊM SẢN PHẨM</b>
         </div>
         <div class="card-body">
             <div class="row">
@@ -79,9 +79,10 @@
                 <label asp-for="ThumbnailImage" class="control-label"></label>
                 <input asp-for="ThumbnailImage" type="file" class="form-control" />
                 <span asp-validation-for="ThumbnailImage" class="text-danger"></span>
-            </div>
+            </div><br />
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Lưu" class="btn btn-primary" />
+                <a class="btn btn-secondary" asp-action="Index" asp-controller="Product">Quay lại</a>
             </div>
         </form>
                 </div>

@@ -39,13 +39,14 @@
     </ol>
     <div class="card mb-4">
         <div class="card-header">
-            <a class="btn btn-success" asp-action="Index" asp-controller="Product">Về danh sách</a>
+            <B>CHI TIẾT SẢN PHẨM</B>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-8">
                     <form asp-action="Update" enctype="multipart/form-data" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input asp-for="Id" value="@Model.Id" type="hidden" class="form-control" />
                         <div class="form-group">
                             <label asp-for="Name" class="control-label"></label>
                             <input asp-for="Name" value="@Model.Name" class="form-control" />
@@ -82,9 +83,10 @@
                             <label asp-for="ThumbnailImage" class="control-label"></label>
                             <input asp-for="ThumbnailImage" value="@Model.ImagePath" type="file" class="form-control" />
                             <span asp-validation-for="ThumbnailImage" class="text-danger"></span>
-                        </div>
+                        </div><br />
                         <div class="form-group">
                             <input type="submit" value="Lưu" class="btn btn-primary" />
+                            <a class="btn btn-secondary" asp-action="Index" asp-controller="Product">Quay lại</a>
                         </div>
                     </form>
                 </div>

@@ -16,7 +16,7 @@ namespace VKStore.Data.Entities
         public string ShipAddress { set; get; }
         public string ShipEmail { set; get; }
         public string ShipPhoneNumber { set; get; }
-        public string TotalPayment { set; get; }
+        public int TotalPayment { set; get; }
         public string Status { set; get; }
         public List<OrderDetail> OrderDetails { get; set; }
         public AppUser AppUser { get; set; }

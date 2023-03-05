@@ -118,7 +118,7 @@ namespace VKStore.Application.Catalog.Products
             // take = lấy bảng ghi
             // ví dụ: pageIndex = 1, pageSize = 10, Skip 1-1=0*10=0    => lấy 10 bảng ghi đầu tiên
             //        pageIndex = 2, pageSize = 10, Skip 2-1=1*10=10   => lấy 10 bảng ghi thứ 2
-            var data = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)
+            var data = await query.OrderByDescending(x=>x.p.CreatedDate).Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize)
                             .Select(x=> new ProductViewModel()
                             {
                                 Id = x.p.Id,
@@ -286,13 +286,13 @@ namespace VKStore.Application.Catalog.Products
             return pagedResult;
         }
 
-        public async Task<List<ProductViewModel>> GetListProduct(int take, int? categoryId)
+        public async Task<List<ProductViewModel>> GetListProduct(int take, int? categoryId, string? keyword)
         {
             var query = from i in _context.ProductImages
                         join p in _context.Products on i.Product.Id equals p.Id
                         join c in _context.Categories on p.CategoryId equals c.Id
                         select new { p, i , c};
-            if (categoryId == null)
+            if (categoryId == null && keyword == null)
             {
                var products = await query.OrderByDescending(x => x.p.CreatedDate).Take(take)
                             .Select(x => new ProductViewModel()
@@ -304,7 +304,19 @@ namespace VKStore.Application.Catalog.Products
                             }).ToListAsync();
                 return products;
             }
-            else
+            else if (categoryId == null && keyword != null)
+            {
+                var products = await query.Where(x => x.p.Name.Contains(keyword)).OrderByDescending(x => x.p.CreatedDate).Take(take)
+                            .Select(x => new ProductViewModel()
+                            {
+                                Id= x.p.Id,
+                                Name = x.p.Name,
+                                Price = x.p.Price,
+                                ImagePath = x.i.ImagePath
+                            }).ToListAsync();
+                return products;
+            }
+            else 
             {
                 var category = await _context.Categories.Where(x => x.Id == categoryId).SingleOrDefaultAsync();
                 if(category.ParentId != null)

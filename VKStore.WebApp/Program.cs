@@ -15,6 +15,7 @@ builder.Services.AddScoped<ISlideApiClient, SlideApiClient>();
 builder.Services.AddScoped<ICategoryApiClient, CategoryApiClient>();
 builder.Services.AddScoped<IOrderApiClient, OrderApiClient>();
 builder.Services.AddScoped<IProductApiClient, ProductApiClient>();
+builder.Services.AddScoped<IContactApiClient, ContactApiClient>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSession(options =>
 {

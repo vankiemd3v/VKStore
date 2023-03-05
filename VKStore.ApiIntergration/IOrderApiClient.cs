@@ -9,6 +9,7 @@ namespace VKStore.ApiIntergration
     {
         Task<PagedResult<OrderViewModel>> GetOrdersPagings(GetOrdersPagingRequest request);
         Task<bool> CreateOrder(CreateOrderRequest request);
+        Task<bool> SendEmail(CreateOrderRequest request);
         Task<OrderViewModel> Detail(int id);
         Task<bool> UpdateStatusOrder(UpdateStatusOrderRequest request);
     }
